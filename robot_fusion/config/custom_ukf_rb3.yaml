@@ -1,0 +1,25 @@
+/**:
+  ros__parameters:
+    # Input topic names
+    odom_topic: '/rb3/odom'
+    
+    # Trilateration measurement topics (relative positions)
+    trilat_topic_other1: '/rb3/tri_pos_in_rb1'  # Position of rb1 in rb3's frame
+    trilat_topic_other2: '/rb3/tri_pos_in_rb2'  # Position of rb2 in rb3's frame
+    
+    # Output topic
+    output_topic: '/rb3/ukf_pose'
+    
+    # Update rate (Hz)
+    update_rate: 20.0
+    
+    # Odometry measurement noise (standard deviations)
+    odom_pos_noise: 0.01        # Position measurement noise (meters)
+    odom_ang_noise: 0.001       # Angle measurement noise (radians)
+    
+    # Trilateration measurement noise
+    trilat_noise: 0.0225        # (0.15m)^2 for trilateration distance
+    
+    # Process noise (uncertainty in motion model)
+    process_noise_pos: 0.01     # Position uncertainty
+    process_noise_ang: 0.001    # Angle uncertainty
