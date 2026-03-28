@@ -53,9 +53,6 @@ ros2 launch trilat_eval eval_circle.launch.py
     pose1_relative: false
     pose1_nodelay: true
 
-woshizhaohaozhe
 
-    
-你好
 
 
