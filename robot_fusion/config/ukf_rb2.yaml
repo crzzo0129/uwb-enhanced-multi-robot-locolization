@@ -60,7 +60,7 @@ rb2/ukf_filter_node:
     odom0_differential: false
     odom0_queue_size: 20
     odom0_nodelay: false
-    odom0_relative: false
+    odom0_relative: true
 
     imu0: /rb2/imu_plugin/out
     imu0_config: [
@@ -88,7 +88,7 @@ rb2/ukf_filter_node:
     pose0_differential: false
     pose0_queue_size: 5
     pose0_rejection_threshold: 2.0  # 马氏距离阈值，拒绝异常测量
-    pose0_relative: false
+    pose0_relative: true
     
     # 相对位姿测量: rb1 相对于 rb3
     pose1: /rb2/tri_pos_in_rb1
@@ -102,4 +102,4 @@ rb2/ukf_filter_node:
     pose1_differential: false
     pose1_queue_size: 5
     pose1_rejection_threshold: 2.0
-    pose1_relative: false
+    pose1_relative: true

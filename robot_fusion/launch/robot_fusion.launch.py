@@ -56,7 +56,7 @@ def generate_launch_description():
         arguments=[
             '-file', robot2_file,
             '-entity', 'robot2',
-            '-x', '0.0', '-y', '2.0', '-z', '0.0'
+            '-x', '0.0', '-y', '10.0', '-z', '0.0'
         ],
         output='screen'
     )
@@ -67,7 +67,7 @@ def generate_launch_description():
         arguments=[
             '-file', robot3_file,
             '-entity', 'robot3',
-            '-x', '1.0', '-y', '1.0', '-z', '0.0'
+            '-x', '6.0', '-y', '8.0', '-z', '0.0'
         ],
         output='screen'
     )

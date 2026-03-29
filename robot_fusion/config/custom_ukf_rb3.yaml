@@ -18,8 +18,9 @@
     odom_ang_noise: 0.001       # Angle measurement noise (radians)
     
     # Trilateration measurement noise
-    trilat_noise: 0.0225        # (0.15m)^2 for trilateration distance
+    trilat_noise: 0.15        # (0.15m)^2 for trilateration distance
     
     # Process noise (uncertainty in motion model)
-    process_noise_pos: 0.01     # Position uncertainty
-    process_noise_ang: 0.001    # Angle uncertainty
+    process_noise_pos: 0.15     # Position uncertainty
+    process_noise_ang: 0.02    # Angle uncertainty
+

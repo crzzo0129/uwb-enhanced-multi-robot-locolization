@@ -55,8 +55,8 @@ class TrilatNode(Node):
         self.pub_pose3_topic  = self.declare_parameter('pub_pose3_topic',  '/rb3/tri_pos_in_rb2').value
         self.pub_tf          = self.declare_parameter('pub_tf', True).value
         self.rb2_frame_id    = self.declare_parameter('rb2_frame_id', 'rb2/base_link').value
-        self.rb1_child_frame_id = self.declare_parameter('rb1_child_frame_id', 'rb1/tri_estimate').value
-        self.rb3_child_frame_id = self.declare_parameter('rb3_child_frame_id', 'rb3/tri_estimate').value
+        self.rb1_child_frame_id = self.declare_parameter('rb1_child_frame_id', 'rb1/tri_estimate_in_rb2').value
+        self.rb3_child_frame_id = self.declare_parameter('rb3_child_frame_id', 'rb3/tri_estimate_in_rb2').value
 
         # 已知初始（用于首帧兜底；运行期我们每帧用里程计重算 r32、r12）
         self.init_known = self.declare_parameter('init_known', True).value

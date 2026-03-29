@@ -48,8 +48,8 @@ class TrilatNodeRB1(Node):
         self.pub_pose3_topic  = self.declare_parameter('pub_pose3_topic',  '/rb3/tri_pos_in_rb1').value
         self.pub_tf          = self.declare_parameter('pub_tf', True).value
         self.rb1_frame_id    = self.declare_parameter('rb1_frame_id', 'rb1/base_link').value
-        self.rb2_child_frame_id = self.declare_parameter('rb2_child_frame_id', 'rb2/tri_estimate').value
-        self.rb3_child_frame_id = self.declare_parameter('rb3_child_frame_id', 'rb3/tri_estimate').value
+        self.rb2_child_frame_id = self.declare_parameter('rb2_child_frame_id', 'rb2/tri_estimate_in_rb1').value
+        self.rb3_child_frame_id = self.declare_parameter('rb3_child_frame_id', 'rb3/tri_estimate_in_rb1').value
 
         # 分支选择
         self.flip_hysteresis = int(self.declare_parameter('flip_hysteresis', 2).value)

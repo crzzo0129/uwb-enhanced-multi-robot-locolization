@@ -13,7 +13,7 @@ def generate_launch_description():
                 {'gazebo_model_name': 'robot1'},     # Gazebo 模型名
                 {'gt_path_topic': '/gt_path'},       # 若 gt_source=path 时使用
                 {'odom_topic': '/rb1/odom_noisy'},
-                {'filtered_topic': '/rb1/odometry/filtered'},
+                {'filtered_topic': '/rb1/ukf_pose'},
                 {'min_points': 100},
                 {'report_period': 5.0},
                 {'save_fig': True},

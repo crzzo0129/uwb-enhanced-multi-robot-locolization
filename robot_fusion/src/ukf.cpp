@@ -13,14 +13,14 @@ UKF::UKF(double dt)
   Wc_.resize(num_sigma_points_);
   
   Wm_[0] = lambda_ / (STATE_DIM + lambda_);
-  Wc_[0] = lambda_ / (STATE_DIM + lambda_) + (1 - beta_ + 2 * 2);  // alpha^2 = 1 for Gaussian
-  
+  Wc_[0] = lambda_ / (STATE_DIM + lambda_) + (1 - beta_ + 2 * 2);
+
   for (int i = 1; i < num_sigma_points_; ++i) {
     Wm_[i] = 1.0 / (2.0 * (STATE_DIM + lambda_));
     Wc_[i] = 1.0 / (2.0 * (STATE_DIM + lambda_));
   }
 
-  // Initialize state and covariance with proper sizes
+  // Initialize state and covariance
   x_ = Eigen::VectorXd::Zero(STATE_DIM);
   P_ = Eigen::MatrixXd::Identity(STATE_DIM, STATE_DIM);
   Q_ = Eigen::MatrixXd::Identity(STATE_DIM, STATE_DIM);
@@ -44,15 +44,12 @@ Eigen::MatrixXd UKF::generateSigmaPoints(
   double gamma = std::sqrt(STATE_DIM + lambda_);
   Eigen::MatrixXd sigma_points(STATE_DIM, num_sigma_points_);
   
-  // First sigma point is the mean
   sigma_points.col(0) = x;
   
-  // Cholesky decomposition
   Eigen::LLT<Eigen::MatrixXd> llt(P);
   Eigen::MatrixXd L = llt.matrixL();
-  
-  // Positive and negative deviations
   Eigen::MatrixXd sqrt_term = gamma * L;
+  
   for (int i = 0; i < STATE_DIM; ++i) {
     sigma_points.col(i + 1) = x + sqrt_term.col(i);
     sigma_points.col(STATE_DIM + i + 1) = x - sqrt_term.col(i);
@@ -84,8 +81,6 @@ Eigen::VectorXd UKF::motionModel(
   double vy = state(4);
   double omega = state(5);
   
-  // Simple constant velocity model
-  // Transform velocity from body frame to world frame
   double cos_theta = std::cos(theta);
   double sin_theta = std::sin(theta);
   
@@ -95,8 +90,7 @@ Eigen::VectorXd UKF::motionModel(
   next_state(0) = x + v_world_x * dt;
   next_state(1) = y + v_world_y * dt;
   next_state(2) = normalizeAngle(theta + omega * dt);
-  // Velocity and angular velocity remain constant (or can have small decay)
-  next_state(3) = vx * 0.99;  // Small damping
+  next_state(3) = vx * 0.99;
   next_state(4) = vy * 0.99;
   next_state(5) = omega * 0.99;
   
@@ -106,24 +100,18 @@ Eigen::VectorXd UKF::motionModel(
 Eigen::Vector3d UKF::measurementModelOdom(
     const Eigen::VectorXd& state) {
   Eigen::Vector3d z;
-  z(0) = state(0);  // x
-  z(1) = state(1);  // y
-  z(2) = state(2);  // theta
+  z(0) = state(0);
+  z(1) = state(1);
+  z(2) = state(2);
   return z;
 }
 
-Eigen::Vector2d UKF::measurementModelTrilat(
-    const Eigen::VectorXd& state) {
-  // This extracts the relative position as seen from current heading
-  // In practice, this would be the position in the body frame
-  double x = state(0);
-  double y = state(1);
-  
-  // For now, just return global position - the actual relative position
-  // would depend on which other robot we're measuring relative to
-  Eigen::Vector2d z;
-  z(0) = x;
-  z(1) = y;
+Eigen::VectorXd UKF::measurementModelTrilat(
+    const Eigen::VectorXd& state, const Eigen::Vector2d& other_pos) {
+  Eigen::Vector2d my_pos = state.head<2>();
+  double predicted_range = (my_pos - other_pos).norm();
+  Eigen::VectorXd z(1);
+  z(0) = predicted_range;
   return z;
 }
 
@@ -140,20 +128,17 @@ Eigen::MatrixXd UKF::propagateSigmaPoints(
 void UKF::predict(double dt) {
   if (dt < 0) dt = dt_;
   
-  // Generate sigma points
   Eigen::MatrixXd sigma_points = generateSigmaPoints(x_, P_);
-  
-  // Propagate through motion model
   Eigen::MatrixXd sigma_pred = propagateSigmaPoints(sigma_points, dt);
   
-  // Calculate predicted mean
+  // Predicted mean
   Eigen::VectorXd x_pred = Eigen::VectorXd::Zero(STATE_DIM);
   for (int i = 0; i < num_sigma_points_; ++i) {
     x_pred += Wm_[i] * sigma_pred.col(i);
   }
   x_pred(2) = normalizeAngle(x_pred(2));
   
-  // Calculate predicted covariance
+  // Predicted covariance
   Eigen::MatrixXd P_pred = Eigen::MatrixXd::Zero(STATE_DIM, STATE_DIM);
   for (int i = 0; i < num_sigma_points_; ++i) {
     Eigen::VectorXd error = sigma_pred.col(i) - x_pred;
@@ -162,29 +147,25 @@ void UKF::predict(double dt) {
   }
   P_pred += Q_;
   
-  // Update state and covariance
   x_ = x_pred;
   P_ = P_pred;
 }
 
+// ==================== 修复后的 updateOdom ====================
 void UKF::updateOdom(const Eigen::Vector3d& z) {
-  // Generate sigma points
   Eigen::MatrixXd sigma_points = generateSigmaPoints(x_, P_);
   
-  // Transform sigma points to measurement space
   std::vector<Eigen::Vector3d> z_sigma(num_sigma_points_);
   for (int i = 0; i < num_sigma_points_; ++i) {
     z_sigma[i] = measurementModelOdom(sigma_points.col(i));
   }
   
-  // Calculate predicted measurement mean
   Eigen::Vector3d z_pred = Eigen::Vector3d::Zero();
   for (int i = 0; i < num_sigma_points_; ++i) {
     z_pred += Wm_[i] * z_sigma[i];
   }
   z_pred(2) = normalizeAngle(z_pred(2));
   
-  // Calculate innovation covariance Pz and cross-covariance Pxz
   Eigen::Matrix3d Pz = Eigen::Matrix3d::Zero();
   Eigen::MatrixXd Pxz = Eigen::MatrixXd::Zero(STATE_DIM, 3);
   
@@ -200,72 +181,69 @@ void UKF::updateOdom(const Eigen::Vector3d& z) {
   }
   Pz += R_odom_;
   
-  // Calculate Kalman gain
   Eigen::MatrixXd K = Pxz * Pz.inverse();
   
-  // Calculate innovation
   Eigen::Vector3d y = z - z_pred;
   y(2) = angleError(z_pred(2), z(2));
   
-  // Update state
+  // State update
   x_ += K * y;
   x_(2) = normalizeAngle(x_(2));
   
-  // Update covariance using Joseph form for stability
-  // P = (I - K*H)*P, where H is [1 0 0 0 0 0; 0 1 0 0 0 0; 0 0 1 0 0 0]
-  Eigen::MatrixXd I_minus_KH = Eigen::MatrixXd::Identity(STATE_DIM, STATE_DIM);
-  I_minus_KH.block(0, 0, 3, STATE_DIM) -= K;
-  P_ = I_minus_KH * P_;
+  // Joseph form（更稳定）
+  Eigen::MatrixXd I = Eigen::MatrixXd::Identity(STATE_DIM, STATE_DIM);
+  I.block(0, 0, STATE_DIM, 3) -= K;
+  P_ = (I * P_ * I.transpose()) + (K * R_odom_ * K.transpose());
 }
 
 void UKF::updateTrilatMeasurement(
-    const Eigen::Vector2d& z_rel,
-    const Eigen::Matrix<double, 2, 2>& meas_noise) {
-  // Generate sigma points
+    double measured_range, const Eigen::Vector2d& other_pos,
+    double range_noise_std) {
+
   Eigen::MatrixXd sigma_points = generateSigmaPoints(x_, P_);
-  
-  // Transform sigma points to measurement space (relative position)
-  std::vector<Eigen::Vector2d> z_sigma(num_sigma_points_);
+
+  // Predict range for each sigma point
+  std::vector<double> z_sigma(num_sigma_points_);
   for (int i = 0; i < num_sigma_points_; ++i) {
-    z_sigma[i] = measurementModelTrilat(sigma_points.col(i));
+    z_sigma[i] = measurementModelTrilat(sigma_points.col(i), other_pos)(0);
   }
-  
-  // Calculate predicted measurement mean
-  Eigen::Vector2d z_pred = Eigen::Vector2d::Zero();
+
+  // Predicted measurement mean
+  double z_pred = 0.0;
   for (int i = 0; i < num_sigma_points_; ++i) {
     z_pred += Wm_[i] * z_sigma[i];
   }
-  
-  // Calculate innovation covariance Pz and cross-covariance Pxz
-  Eigen::Matrix2d Pz = Eigen::Matrix2d::Zero();
-  Eigen::MatrixXd Pxz = Eigen::MatrixXd::Zero(STATE_DIM, 2);
-  
+
+  // Innovation covariance and cross-covariance
+  double Pz = 0.0;
+  Eigen::MatrixXd Pxz = Eigen::MatrixXd::Zero(STATE_DIM, 1);
+
   for (int i = 0; i < num_sigma_points_; ++i) {
-    Eigen::Vector2d z_diff = z_sigma[i] - z_pred;
+    double z_diff = z_sigma[i] - z_pred;
     Eigen::VectorXd x_diff = sigma_points.col(i) - x_;
     x_diff(2) = normalizeAngle(x_diff(2));
-    
-    Pz += Wc_[i] * z_diff * z_diff.transpose();
-    Pxz += Wc_[i] * x_diff * z_diff.transpose();
+
+    Pz += Wc_[i] * z_diff * z_diff;
+    Pxz += Wc_[i] * x_diff * z_diff;
   }
-  Pz += meas_noise;
-  
-  // Calculate Kalman gain
-  Eigen::MatrixXd K = Pxz * Pz.inverse();
-  
-  // Calculate innovation
-  Eigen::Vector2d y = z_rel - z_pred;
-  
-  // Update state
-  Eigen::VectorXd K_times_y = K * y;
-  x_ += K_times_y;
+
+  Eigen::MatrixXd R = Eigen::MatrixXd::Identity(1, 1) * (range_noise_std * range_noise_std);
+  Pz += R(0, 0);
+
+  // Kalman gain
+  Eigen::MatrixXd K = Pxz * (1.0 / Pz);
+
+  // Innovation
+  double y = measured_range - z_pred;
+
+  // State update
+  x_ += K * y;
   x_(2) = normalizeAngle(x_(2));
-  
-  // Update covariance using Joseph form for stability
-  // P = (I - K*H)*P, where H is [1 0 0 0 0 0; 0 1 0 0 0 0]
-  Eigen::MatrixXd I_minus_KH = Eigen::MatrixXd::Identity(STATE_DIM, STATE_DIM);
-  I_minus_KH.block(0, 0, 2, STATE_DIM) -= K;
-  P_ = I_minus_KH * P_;
+
+  // Joseph form covariance update (稳定)
+  Eigen::MatrixXd I = Eigen::MatrixXd::Identity(STATE_DIM, STATE_DIM);
+  I.block(0, 0, STATE_DIM, 1) -= K;
+  P_ = (I * P_ * I.transpose()) + (K * R * K.transpose());
 }
 
 }  // namespace robot_fusion

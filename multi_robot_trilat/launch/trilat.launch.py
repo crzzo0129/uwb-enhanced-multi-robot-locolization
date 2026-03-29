@@ -8,7 +8,7 @@ def generate_launch_description():
         name='tri_node_rb1base',
         output='screen',
         parameters=[
-            {'pub_tf': False}
+            {'pub_tf': True}
         ]
     )
 
@@ -41,7 +41,7 @@ def generate_launch_description():
         name='tri_node_rb3base',
         output='screen',
         parameters=[
-            {'pub_tf': False}
+            {'pub_tf': True}
         ]
     )
     return LaunchDescription([

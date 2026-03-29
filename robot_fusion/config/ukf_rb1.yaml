@@ -49,7 +49,7 @@ rb1/ukf_filter_node:
       0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1e6
     ]
 
-    odom0: /rb1/odom_noisy
+    odom0: /rb1/odom
     odom0_config: [
       true, true, false,
       true, false, true,
@@ -75,7 +75,7 @@ rb1/ukf_filter_node:
     imu0_queue_size: 20
     imu0_remove_gravitational_acceleration: true
     imu0_nodelay: true
-    imu0_relative: false
+    imu0_relative: true
     # 相对位姿测量: rb1 相对于 rb2
     pose0: /rb1/tri_pos_in_rb2
     pose0_config: [
@@ -88,5 +88,5 @@ rb1/ukf_filter_node:
     pose0_differential: false
     pose0_queue_size: 10
     pose0_rejection_threshold: 5.0  # 马氏距离阈值，拒绝异常测量
-    pose0_relative: false
+    pose0_relative: true
     pose0_nodelay: true

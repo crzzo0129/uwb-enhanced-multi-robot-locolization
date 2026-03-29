@@ -47,8 +47,8 @@ class TrilatNodeRB3(Node):
         self.pub_pose1_topic  = self.declare_parameter('pub_pose1_topic',  '/rb1/tri_pos_in_rb3').value
         self.pub_tf          = self.declare_parameter('pub_tf', True).value
         self.rb3_frame_id    = self.declare_parameter('rb3_frame_id', 'rb3/base_link').value
-        self.rb2_child_frame_id = self.declare_parameter('rb2_child_frame_id', 'rb2/tri_estimate').value
-        self.rb1_child_frame_id = self.declare_parameter('rb1_child_frame_id', 'rb1/tri_estimate').value
+        self.rb2_child_frame_id = self.declare_parameter('rb2_child_frame_id', 'rb2/tri_estimate_in_rb3').value
+        self.rb1_child_frame_id = self.declare_parameter('rb1_child_frame_id', 'rb1/tri_estimate_in_rb3').value
 
         # 参数
         self.init_known = self.declare_parameter('init_known', True).value

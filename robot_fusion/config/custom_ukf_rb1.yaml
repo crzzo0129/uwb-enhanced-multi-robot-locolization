@@ -1,7 +1,7 @@
 /**:
   ros__parameters:
     # Input topic names
-    odom_topic: '/rb1/odom'
+    odom_topic: '/rb1/odom_noisy'
     
     # Trilateration measurement topics (relative positions)
     # /rb1/tri_pos_in_rbX: position of rbX in rb1's local frame
@@ -19,8 +19,8 @@
     odom_ang_noise: 0.001       # Angle measurement noise (radians)
     
     # Trilateration measurement noise
-    trilat_noise: 0.0225        # (0.15m)^2 for trilateration distance
+    trilat_noise: 0.15        # (0.15m)^2 for trilateration distance
     
     # Process noise (uncertainty in motion model)
-    process_noise_pos: 0.01     # Position uncertainty
-    process_noise_ang: 0.001    # Angle uncertainty
+    process_noise_pos: 0.15     # Position uncertainty
+    process_noise_ang: 0.02    # Angle uncertainty

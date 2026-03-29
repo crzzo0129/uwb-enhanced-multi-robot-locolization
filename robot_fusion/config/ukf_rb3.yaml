@@ -88,7 +88,7 @@ rb3/ukf_filter_node:
     pose0_differential: false
     pose0_queue_size: 5
     pose0_rejection_threshold: 2.0  # 马氏距离阈值，拒绝异常测量
-    pose0_relative: false
+    pose0_relative: true
     
     # 相对位姿测量: rb3 相对于 rb2
     pose1: /rb3/tri_pos_in_rb2
@@ -102,4 +102,4 @@ rb3/ukf_filter_node:
     pose1_differential: false
     pose1_queue_size: 5
     pose1_rejection_threshold: 2.0
-    pose1_relative: false
+    pose1_relative: true
