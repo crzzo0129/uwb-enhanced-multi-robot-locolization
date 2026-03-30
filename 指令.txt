@@ -4,19 +4,17 @@ ros2 launch robot_fusion robot_fusion.launch.py
 打开三角定位（由距离话题/robot_distances计算出相对位置）
 ros2 launch multi_robot_trilat trilat.launch.py
 
-打开ukf
-ros2 launch robot_fusion ukf_fusion.launch.py
+给/rb1/odom加入噪声
+ros2 launch odom_noise odom_noise.launch.py
 
-以上三条指令必须按照顺序依次运行
+打开ukf
+ros2 launch robot_fusion custom_ukf.launch.py
 
 键盘操控(X = 1,2,3)
 ros2 launch robot_fusion teleopX.launch.py
 
 查看相对位置(rbX 在 rbY/base_link坐标系下的坐标)
 ros2 topic echo /rbX/tri_pos_in_rbY
-
-给/rb1/odom加入噪声
-ros2 launch odom_noise odom_noise.launch.py
 
 让robot1做圆周运动
 ros2 topic pub -r 10 /rb1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5}, angular: {z: 0.25}}"
