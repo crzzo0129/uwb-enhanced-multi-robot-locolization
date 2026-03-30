@@ -4,7 +4,7 @@
 
 # UWB增强的多机器人协同定位系统
 
-![eval_result](./images/eval_result.png)
+![eval_result](./assets/eval_result.png)
 
 **基于 UWB 的多机器人协同定位系统** *(ROS 2 + Gazebo 仿真)*
 
@@ -24,9 +24,7 @@
 <details>
 <summary><b>场景一：极端状态突变与全局重定位（绑架机器人问题）</b></summary>
 
-<br>
-<video src="https://github.com/user-attachments/assets/bab585f1-c683-4902-bb98-6ce9ef08219a" controls="controls" width="100%"></video>
-<br>
+https://github.com/user-attachments/assets/c812a918-5a30-4f5a-aba6-89a2956db225
 
 * **背景痛点：** 传统 Lidar/Visual SLAM 强依赖连续的运动学平滑推演。当机器人遭遇“绑架”（人工搬运、严重物理撞击或履带彻底打滑）时，连续位姿假设破裂，扫描匹配失效，状态协方差瞬间发散，导致定位与建图系统彻底崩溃。
 * **底层逻辑：** UWB 提供了不受运动学连续性限制的绝对距离约束。当目标车辆发生非连续的大尺度空间位移时，UKF 绕过失效的 Lidar 前端，直接利用其余两台协同车辆的高置信度位置先验，通过 UWB 多边测距的量测方程，在极短的滤波周期内将发散的位姿强制收敛至真实的物理坐标，实现**无特征依赖的全局重定位**。
@@ -36,9 +34,7 @@
 <details>
 <summary><b>场景二：几何特征退化环境的动态补偿</b></summary>
 
-<br>
-<video src="https://github.com/user-attachments/assets/816c4b6c-cefb-4e03-95a8-266a31c1a577" controls="controls" width="100%"></video>
-<br>
+https://github.com/user-attachments/assets/6a4bd67f-8c1b-4a10-94bc-a861f62946be
 
 * **背景痛点：** 在长直走廊或空旷场地中，激光雷达在特定自由度（如纵向前进方向）上会遭遇几何特征缺失。点云配准算法因此发生退化，导致底盘里程计的积分漂移不受控制，生成的地图出现严重的纵向拉伸或压缩。
 * **底层逻辑：** 在该退化状态下，远端的两台协同车辆构成了动态的 UWB 基准网络。UKF 算法动态调整传感器权重，将 UWB 提供的低频、绝对距离约束注入状态更新阶段。这一机制精准补齐了 Lidar 在单一自由度上的观测盲区，利用相对距离的刚性约束，物理级锁死了由特征缺失带来的纵向累积漂移。
