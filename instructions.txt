@@ -10,8 +10,8 @@ ros2 launch odom_noise odom_noise.launch.py
 打开ukf
 ros2 launch robot_fusion custom_ukf.launch.py
 
-键盘操控(X = 1,2,3)
-ros2 launch robot_fusion teleopX.launch.py
+键盘操控三个机器人
+ros2 launch robot_fusion teleop_robots.launch.py
 
 查看相对位置(rbX 在 rbY/base_link坐标系下的坐标)
 ros2 topic echo /rbX/tri_pos_in_rbY
@@ -19,5 +19,5 @@ ros2 topic echo /rbX/tri_pos_in_rbY
 让robot1做圆周运动
 ros2 topic pub -r 10 /rb1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5}, angular: {z: 0.25}}"
 
-打开“圆拟合”评估效果
-ros2 launch trilat_eval eval_circle.launch.py
+评估效果
+ros2 launch trilat_eval eval_polyline.launch.py
