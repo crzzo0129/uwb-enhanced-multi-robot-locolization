@@ -49,7 +49,7 @@ uwb-enhanced-multi-robot-locolization/
 ### Prerequisites
 
 - **OS**: Ubuntu 20.04 or 22.04
-- **ROS 2**: Humble (recommended) or Iron
+- **ROS 2**: Galastic (recommended) or Iron
 - **Gazebo**: Harmonic or Classic (depending on ROS 2 version)
 - **Build tools**: `colcon`, `rosdep`
 
@@ -57,14 +57,14 @@ uwb-enhanced-multi-robot-locolization/
 
 ```bash
 # 1. Create workspace
-mkdir -p ~/uwb_ws/src
-cd ~/uwb_ws/src
+mkdir -p ~/fusion_ws/src
+cd ~/fusion_ws/src
 
 # 2. Clone the repository
 git clone https://github.com/crzzo0129/uwb-enhanced-multi-robot-locolization.git
 
 # 3. Install dependencies
-cd ~/uwb_ws
+cd ~/fusion_ws
 rosdep install --from-paths src --ignore-src -r -y
 
 # 4. Build the workspace
@@ -78,12 +78,9 @@ Refer to the original `指令.txt` for detailed commands. Typical workflow:
 
 ```bash
 # Launch the full multi-robot simulation with UWB and UKF (example)
-ros2 launch robot_fusion multi_robot_ukf.launch.py
-
-# Or launch individual components
-ros2 run odom_noise odom_noise_node
-ros2 run robot_fusion uwb_distance_publisher
-ros2 run robot_fusion ukf_fusion_node --ros-args -r __ns:=/rb1
+ros2 launch robot_fusion robot_fusion.launch.py
+ros2 launch odom_noise odom_noise.launch.py
+ros2 launch robot_fusion custom_ukf.launch.py
 ```
 
 **Tip**: Use the `trilat_eval` module to collect data while manually driving robots in circular trajectories for accuracy assessment.
