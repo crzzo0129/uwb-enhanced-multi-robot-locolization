@@ -39,7 +39,7 @@ uwb-enhanced-multi-robot-locolization/
 ├── uwbpsr_ratros2/              # UWB-related ROS 2 package (if present)
 ├── LICENSE
 ├── README.md
-└── 指令.txt                     # Original Chinese running instructions
+└── instructions.txt                     # Original Chinese running instructions
 ```
 
 ---
