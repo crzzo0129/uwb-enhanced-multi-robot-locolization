@@ -76,6 +76,9 @@ uwb-enhanced-multi-robot-locolization/
 
 ## 🚀 Quick Start
 
+<details>
+  <summary><b>prerequisites and installation</b></summary>
+
 ### Prerequisites
 
 - **OS**: Ubuntu 20.04 or 22.04
@@ -114,6 +117,8 @@ ros2 launch robot_fusion custom_ukf.launch.py
 ```
 
 **Tip**: Use the `trilat_eval` module to collect data while manually driving robots in circular trajectories for accuracy assessment.
+
+</details>
 
 ---
 
