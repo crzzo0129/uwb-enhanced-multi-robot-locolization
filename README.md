@@ -22,25 +22,21 @@ Key techniques include:
 
 Traditional Unscented Kalman Filter (UKF) algorithms relying solely on Odometry, IMU, and Lidar/Visual SLAM inherently suffer from cumulative drift and kinematic dependency. When subjected to extreme spatial mutations or sustained geometric feature loss, standard state estimation diverges, leading to irreversible localization failure. By fusing Ultra-Wideband (UWB) absolute distance constraints, this multi-robot cooperative localization system fundamentally overcomes these limitations through inter-node spatial rigid constraints.
 
-<details>
-<summary><b>Scenario 1: Extreme State Mutation and Global Relocalization (Kidnapped Robot)</b></summary>
+### Scenario 1: Extreme State Mutation and Global Relocalization (Kidnapped Robot)
 
 https://github.com/user-attachments/assets/337f2022-1c17-47c2-a752-7a696de896fd
 
 * **Background:** Traditional Lidar/Visual SLAM relies heavily on continuous kinematic extrapolation. When a robot is "kidnapped" (picked up, subjected to severe impact, or experiences total wheel slip), the continuous pose assumption breaks down. Scan matching fails, state covariance diverges instantly, and the localization system collapses.
 * **Underlying Logic:** UWB introduces absolute range constraints that are independent of kinematic continuity. During an abrupt large-scale displacement, the UKF algorithm bypasses the failed Lidar frontend. It leverages the high-confidence pose priors of the other two cooperative vehicles and the UWB multilateration measurement equations to force the divergent pose to converge to the true physical coordinates within a few filter cycles, achieving **feature-independent global relocalization**.
 * **Premises & Risks:** This assumes the two anchor vehicles maintain accurate global poses during the event. The risk is that if the kidnapping distance exceeds the maximum UWB communication range or encounters severe RF shielding, the relocalization cannot be deduced.
-</details>
 
-<details>
-<summary><b>Scenario 2: Dynamic Compensation in Degenerated Environments</b></summary>
+### Scenario 2: Dynamic Compensation in Degenerated Environments
 
 https://github.com/user-attachments/assets/96c60db6-e851-40e3-ae7f-a42512d7292b
 
 * **Background:** In environments like long straight corridors or featureless open spaces, Lidar suffers from a lack of geometric features in specific degrees of freedom (e.g., longitudinal translation). The scan-matching algorithm degenerates, leaving the odometry's integration drift uncorrected, which leads to severely stretched or compressed maps.
 * **Underlying Logic:** In this degenerated state, the two distant cooperative vehicles act as a dynamic UWB reference network. The UKF dynamically adjusts sensor weights and injects the low-frequency, absolute distance constraints provided by UWB into the update step. This rigidly compensates for the Lidar's observational blind spot in that specific DoF, physically locking down the longitudinal cumulative drift caused by feature loss.
 * **Premises & Risks:** This assumes the assisting vehicles are located in non-degenerated areas or have independent reliable localization. A significant potential risk is **Collinearity Ambiguity**: if all three robots are perfectly aligned in a straight line within the corridor, the lateral geometric constraints from UWB drop to zero, which can lead to matrix singularities or flip ambiguity in the lateral covariance estimation.
-</details>
 
 ## ✨ Features
 
@@ -75,9 +71,6 @@ uwb-enhanced-multi-robot-locolization/
 ---
 
 ## 🚀 Quick Start
-
-<details>
-  <summary><b>prerequisites and installation</b></summary>
 
 ### Prerequisites
 
@@ -117,8 +110,6 @@ ros2 launch robot_fusion custom_ukf.launch.py
 ```
 
 **Tip**: Use the `trilat_eval` module to collect data while manually driving robots in circular trajectories for accuracy assessment.
-
-</details>
 
 ---
 
