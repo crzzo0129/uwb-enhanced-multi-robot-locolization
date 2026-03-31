@@ -75,6 +75,9 @@ uwb-enhanced-multi-robot-locolization/
 
 ## 🚀 快速上手
 
+<details>
+  <summary><b>环境要求与使用方式</b></summary
+
 ### 环境要求
 
 - **操作系统**: Ubuntu 20.04 或 22.04
