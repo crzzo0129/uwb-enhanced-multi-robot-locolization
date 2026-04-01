@@ -15,6 +15,10 @@
 - 用于传感器融合的无迹卡尔曼滤波 (UKF)
 - 包含自定义 UWB 测距插件的高逼真 Gazebo 仿真环境
 
+<div align="center">
+    <img width="50%" alt="car" src="assets/car.jpg">
+</div>
+
 ---
 
 ## 🔬 背景与应用场景
