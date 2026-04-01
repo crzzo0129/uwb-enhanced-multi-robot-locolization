@@ -16,7 +16,9 @@ Key techniques include:
 - Unscented Kalman Filter (UKF) for sensor fusion
 - Realistic Gazebo simulation with a custom UWB ranging plugin
 
-![car](./assets/car.jpg)
+<div align="center">
+    <img width="50%" alt="System Architecture Diagram" src="assets/car.jpg">
+</div>
 
 ---
 
