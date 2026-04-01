@@ -17,7 +17,7 @@ Key techniques include:
 - Realistic Gazebo simulation with a custom UWB ranging plugin
 
 <div align="center">
-    <img width="50%" alt="System Architecture Diagram" src="assets/car.jpg">
+    <img width="50%" alt="car" src="assets/car.jpg">
 </div>
 
 ---
