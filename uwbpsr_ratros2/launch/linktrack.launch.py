@@ -8,10 +8,41 @@ def generate_launch_description():
             executable='linktrack',
             name='linktrack0',
             output='screen',
-            namespace = 'robot9',
+            namespace = 'robot1',
             parameters=[
                 {'port_name': '/dev/ttyUSB1'},
                 {'baud_rate': 115200}
             ]
         )
     ])
+    11
+    1
+    1
+    1
+    11
+    2
+    4
+    24
+    2
+    4
+    2
+    4
+    24
+    42
+    2
+    42
+    42
+    42
+    42
+    42
+    42
+    42
+    24
+    42
+    42
+    42
+    42
+    42
+    42
+    42
+    42
