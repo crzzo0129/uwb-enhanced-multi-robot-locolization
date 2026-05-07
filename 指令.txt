@@ -5,7 +5,7 @@ ros2 launch robot_fusion robot_fusion.launch.py
 ros2 launch multi_robot_trilat trilat.launch.py
 
 打开ukf
-ros2 launch robot_fusion ukf_fusion.launch.py
+ros2 launch robot_fusion custom_ukf.launch.py
 
 以上三条指令必须按照顺序依次运行
 
@@ -20,7 +20,7 @@ ros2 launch odom_noise odom_noise.launch.py
 
 让robot1做圆周运动
 ros2 topic pub -r 10 /rb1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.5}, angular: {z: 0.25}}"
-
+ros2 topic pub -r 10 /rb1/cmd_vel geometry_msgs/msg/Twist "{linear: {x: 0.0}, angular: {z: 0.0}"
 打开“圆拟合”评估效果
 ros2 launch trilat_eval eval_circle.launch.py
     # 相对位姿测量: rb1 相对于 rb2

@@ -144,6 +144,55 @@
       </visual>
     </link>
 
+    <!-- ==================== LiDAR (最终稳定版) ==================== -->
+    <link name="laser_link">
+      <pose>0 0 0.28 0 0 0</pose>
+      <inertial>
+        <mass>0.1</mass>
+        <inertia>
+          <ixx>0.001</ixx><iyy>0.001</iyy><izz>0.001</izz>
+          <ixy>0</ixy><ixz>0</ixz><iyz>0</iyz>
+        </inertia>
+      </inertial>
+        <!-- LiDAR Sensor -->
+      <sensor name="lidar" type="ray">
+        <always_on>true</always_on>
+        <update_rate>5</update_rate>
+        <visualize>true</visualize>
+        <pose>0 0 0 0 0 0</pose>
+        <ray>
+          <scan>
+            <horizontal>
+              <samples>720</samples>
+              <resolution>1</resolution>
+              <min_angle>-3.14159</min_angle>
+              <max_angle>3.14159</max_angle>
+            </horizontal>
+          </scan>
+          <range>
+            <min>0.15</min>
+            <max>12.0</max>
+            <resolution>0.01</resolution>
+          </range>
+        </ray>
+        <!-- Plugin for the sensor -->
+        <plugin name="lidar_plugin" filename="libgazebo_ros_ray_sensor.so">
+          <ros>
+            <namespace>/rb2</namespace>
+            <remapping>~/out:=scan</remapping>
+          </ros>
+          <output_type>sensor_msgs/LaserScan</output_type>
+          <frame_name>rb2/laser_link</frame_name>
+        </plugin>
+      </sensor>
+    </link>
+
+    <joint name="laser_joint" type="fixed">
+      <parent>base_link</parent>
+      <child>laser_link</child>
+      <pose>0 0 0.28 0 0 0</pose>
+    </joint>
+
     <!-- Rear Caster -->
     <link name="rear_caster">
       <pose>-0.2 0 -0.08 0 0 0</pose>
@@ -257,7 +306,7 @@
         <remapping>cmd_vel:=cmd_vel</remapping>
         <remapping>odom:=odom</remapping>
       </ros>
-      <update_rate>30</update_rate>
+      <update_rate>10</update_rate>
        <odometry_noise>
         <linear_velocity>
           <mean>0.0</mean>
@@ -276,7 +325,7 @@
       <max_wheel_acceleration>5.0</max_wheel_acceleration>
       <publish_odom>true</publish_odom>
       <publish_odom_tf>true</publish_odom_tf>
-      <odometry_frame>odom</odometry_frame>
+      <odometry_frame>rb2/odom</odometry_frame>
       <robot_base_frame>rb2/base_link</robot_base_frame>
     </plugin>
   </model>

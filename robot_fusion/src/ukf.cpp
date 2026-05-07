@@ -90,9 +90,9 @@ Eigen::VectorXd UKF::motionModel(
   next_state(0) = x + v_world_x * dt;
   next_state(1) = y + v_world_y * dt;
   next_state(2) = normalizeAngle(theta + omega * dt);
-  next_state(3) = vx * 0.99;
-  next_state(4) = vy * 0.99;
-  next_state(5) = omega * 0.99;
+  next_state(3) = vx;
+  next_state(4) = vy;
+  next_state(5) = omega;
   
   return next_state;
 }

@@ -91,6 +91,55 @@ def generate_launch_description():
         output='screen'
     )
 
+    base_to_laser1 = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0.28', '0', '0', '0', 'rb1/base_link', 'rb1/laser_link'],
+        output='screen'
+    )
+    base_to_laser2 = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0.28', '0', '0', '0', 'rb2/base_link', 'rb2/laser_link'],
+        output='screen'
+    )
+    base_to_laser3 = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '0.28', '0', '0', '0', 'rb3/base_link', 'rb3/laser_link'],
+        output='screen'
+    )
+
+    base_to_footprint1 = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='static_base_footprint1',
+            arguments=['0', '0', '0', '0', '0', '0', 'rb1/base_link', 'rb1/base_footprint'],
+            output='screen'
+    )
+    base_to_footprint2 = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='static_base_footprint2',
+            arguments=['0', '0', '0', '0', '0', '0', 'rb2/base_link', 'rb2/base_footprint'],
+            output='screen'
+    )
+    base_to_footprint3 = Node(
+            package='tf2_ros',
+            executable='static_transform_publisher',
+            name='static_base_footprint3',
+            arguments=['0', '0', '0', '0', '0', '0', 'rb3/base_link', 'rb3/base_footprint'],
+            output='screen'
+    )
+    # base_to_footprint = Node(
+    #         package='tf2_ros',
+    #         executable='static_transform_publisher',
+    #         name='static_base_footprint3',
+    #         arguments=['0', '0', '0', '0', '0', '0', 'rb1/base_link', 'base_footprint'],
+    #         output='screen'
+    # )
+
+
     return LaunchDescription([
         world_file_arg,
         robot1_file_arg,
@@ -102,5 +151,12 @@ def generate_launch_description():
         spawn_robot3,
         base_to_imu1,
         base_to_imu2,
-        base_to_imu3
+        base_to_imu3,
+        base_to_laser1,
+        base_to_laser2,
+        base_to_laser3,
+        base_to_footprint1,
+        base_to_footprint2,
+        base_to_footprint3,
+        #base_to_footprint,
     ])

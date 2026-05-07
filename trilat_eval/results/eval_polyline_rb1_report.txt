@@ -1,0 +1,42 @@
+============================================================
+UKF Performance Evaluation Report (NumPy Only)
+============================================================
+
+[Data Summary]
+  Total samples: 765
+  Duration: 44.31 seconds
+
+[1] Trajectory Error (Relative to UKF)
+  RMSE:  0.4064 m
+  Mean:  0.3590 m
+  Std:   0.1905 m
+  P95:   0.6982 m
+  Max:   1.5916 m
+
+[2] Smoothness Analysis (2nd derivative)
+  Noisy trajectory:   0.4373
+  Filtered trajectory: 0.4284
+  Improvement: 2.0%
+  Smoothness ratio: 1.02x
+
+[3] Drift Analysis
+  Path length (Noisy):  194.05 m
+  Path length (UKF):    195.97 m
+  Displacement (Noisy): 10.49 m
+  Displacement (UKF):   10.41 m
+  Path efficiency (Noisy): 0.054
+  Path efficiency (UKF):   0.053
+  Drift rate (Noisy):  0.2367 m/s
+  Drift rate (UKF):    0.2348 m/s
+
+[4] Error Statistics
+  Trajectory deviation RMSE: 0.3564 m
+
+[5] Position Accuracy (Noisy vs Filtered)
+  Mean deviation: 0.3108 m
+  RMSE:           0.3564 m
+  Std deviation:  0.1746 m
+  Max deviation:  1.4803 m
+  P95:            0.6319 m
+
+============================================================

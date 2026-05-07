@@ -1,0 +1,20 @@
+slam_toolbox:
+  ros__parameters:
+    use_sim_time: true
+    odom_frame: odom                  # 你的 diff_drive 是全局 odom
+    map_frame: rb1/map                # 每个机器人自己的 map（后面会自动对齐）
+    base_frame: rb1/base_footprint    # 你现在已经能用的
+
+    scan_topic: rb1/scan
+    odom_topic: rb1/odom              # 先用 diff_drive，后面换 UKF
+
+    mode: mapping
+    map_update_interval: 10.0
+    resolution: 0.05
+
+    message_filter_queue_length: 500
+    tf_buffer_duration: 60.0
+
+    # 多机器人相关（重要）
+    enable_inter_robot_loop_closures: true
+    shared_map_topic: /shared_map     # 可选，如果不想用默认的 shared_map，可以改成别的名字，但要保证所有机器人一致
